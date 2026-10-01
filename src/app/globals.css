@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+/* Palette: Cameroon's landscape, from rainforest to savanna.
+   Gold is reserved for booking actions and sponsored listings. */
+@theme {
+  --color-forest: #0f3d2e;
+  --color-canopy: #1f6b4a;
+  --color-leaf: #cfe3d6;
+  --color-mist: #eef2ec;
+  --color-basalt: #1c1d1a;
+  --color-stone: #5b6159;
+  --color-savanna: #e3b23c;
+  --color-savanna-deep: #8a6411;
+
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  background: var(--color-mist);
+  color: var(--color-basalt);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-savanna);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
