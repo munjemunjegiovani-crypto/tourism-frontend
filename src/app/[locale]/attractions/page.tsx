@@ -74,7 +74,7 @@ export default async function AttractionsPage({ params, searchParams }: PageProp
           </nav>
 
           {attractions.length ? (
-            <ul className="mt-8 grid gap-x-12 md:grid-cols-2">
+            <ul className="mt-8 grid gap-x-12 md:grid-cols-2 [&>li]:border-t [&>li]:border-forest/15">
               {attractions.map((a) => (
                 <AttractionRow key={a.slug} a={a} locale={locale} />
               ))}

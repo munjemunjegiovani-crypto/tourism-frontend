@@ -61,7 +61,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                     )}
                   </div>
                   {places.length ? (
-                    <ul>
+                    <ul className="divide-y divide-forest/15">
                       {places.map((a) => (
                         <AttractionRow key={a.slug} a={a} locale={locale} />
                       ))}
