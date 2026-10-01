@@ -4,69 +4,74 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /*
- * Colours are named by their job (page, ink, heading…) so each theme can swap them.
- * Light: rainforest green and savanna gold.
- * Dark ("evening edition"): ivory on forest-night, brass accents, serif headlines.
+ * Africa Discover design tokens. Colours are named by job so both themes can swap them.
+ * Light: warm sand, deep forest green, gold used sparingly.
+ * Dark ("classic"): forest-night, ivory text, brass accents and serif headlines.
  */
 :root {
-  --page: #eef2ec;
-  --surface: #f7f9f6;
-  --ink: #1c1d1a;
-  --heading: #0f3d2e;
-  --muted: #5b6159;
-  --line: rgb(15 61 46 / 0.15);
-  --band: #0f3d2e;
-  --band-ink: #eef2ec;
-  --band-rule: transparent;
-  --brand: #1f6b4a;
-  --brand-soft: #cfe3d6;
-  --accent: #e3b23c;
-  --accent-ink: #1c1d1a;
-  --accent-deep: #8a6411;
-  --display-face: "Bricolage Grotesque Variable";
-  --display-weight: 700;
-  --display-tracking: -0.02em;
+  --page: #f7f2e9;
+  --surface: #fffcf7;
+  --sand: #efe6d6;
+  --ink: #23241f;
+  --heading: #1c2a21;
+  --muted: #6a675e;
+  --line: #e4dacb;
+  --primary: #1f4a36;
+  --primary-hover: #173a2a;
+  --primary-ink: #fbf8f2;
+  --brown: #7a5233;
+  --accent: #c98a2b;
+  --accent-soft: #f4e6c8;
+  --accent-ink: #6b4a12;
+  --danger: #b3402d;
+  --shadow-card: 0 1px 2px rgb(35 36 31 / 0.05), 0 10px 30px -12px rgb(35 36 31 / 0.18);
+  --display-face: "Manrope Variable";
+  --display-weight: 800;
+  --display-tracking: -0.025em;
   color-scheme: light;
 }
 
-/* Dark theme values, used both by the toggle and by the system setting */
 :root[data-theme="dark"] {
   --page: #0d1511;
-  --surface: #111c16;
+  --surface: #131d18;
+  --sand: #18241d;
   --ink: #e8e2d2;
   --heading: #f1e9d2;
   --muted: #a8a393;
-  --line: rgb(232 226 210 / 0.14);
-  --band: #07100b;
-  --band-ink: #ece6d6;
-  --band-rule: rgb(210 169 78 / 0.45);
-  --brand: #8cc5a3;
-  --brand-soft: #1b2e24;
+  --line: rgb(232 226 210 / 0.12);
+  --primary: #c9a24c;
+  --primary-hover: #d9b35e;
+  --primary-ink: #15110a;
+  --brown: #c29a72;
   --accent: #d2a94e;
-  --accent-ink: #15110a;
-  --accent-deep: #e6c47a;
+  --accent-soft: rgb(210 169 78 / 0.14);
+  --accent-ink: #e6c47a;
+  --danger: #e07a66;
+  --shadow-card: 0 1px 0 rgb(232 226 210 / 0.04), 0 14px 34px -14px rgb(0 0 0 / 0.6);
   --display-face: "Cormorant Garamond";
   --display-weight: 600;
   --display-tracking: 0;
   color-scheme: dark;
 }
 
+/* Same dark values when the system prefers dark and no choice was saved (no-JS fallback) */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme]) {
     --page: #0d1511;
-    --surface: #111c16;
+    --surface: #131d18;
+    --sand: #18241d;
     --ink: #e8e2d2;
     --heading: #f1e9d2;
     --muted: #a8a393;
-    --line: rgb(232 226 210 / 0.14);
-    --band: #07100b;
-    --band-ink: #ece6d6;
-    --band-rule: rgb(210 169 78 / 0.45);
-    --brand: #8cc5a3;
-    --brand-soft: #1b2e24;
+    --line: rgb(232 226 210 / 0.12);
+    --primary: #c9a24c;
+    --primary-hover: #d9b35e;
+    --primary-ink: #15110a;
+    --brown: #c29a72;
     --accent: #d2a94e;
-    --accent-ink: #15110a;
-    --accent-deep: #e6c47a;
+    --accent-soft: rgb(210 169 78 / 0.14);
+    --accent-ink: #e6c47a;
+    --danger: #e07a66;
     --display-face: "Cormorant Garamond";
     --display-weight: 600;
     --display-tracking: 0;
@@ -77,42 +82,82 @@
 @theme inline {
   --color-page: var(--page);
   --color-surface: var(--surface);
+  --color-sand: var(--sand);
   --color-ink: var(--ink);
   --color-heading: var(--heading);
   --color-muted: var(--muted);
   --color-line: var(--line);
-  --color-band: var(--band);
-  --color-band-ink: var(--band-ink);
-  --color-band-rule: var(--band-rule);
-  --color-brand: var(--brand);
-  --color-brand-soft: var(--brand-soft);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-ink: var(--primary-ink);
+  --color-brown: var(--brown);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
-  --color-accent-deep: var(--accent-deep);
+  --color-danger: var(--danger);
+  --shadow-card: var(--shadow-card);
 
-  --font-display: var(--display-face), ui-serif, Georgia, serif;
-  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--display-face), "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-pop: pop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+  --animate-shimmer: shimmer 1.4s linear infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
 }
 
 html {
   background: var(--page);
   color: var(--ink);
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
-  font-size: 1.0625rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-family: var(--font-display);
   font-weight: var(--display-weight);
-  line-height: 1.05;
   letter-spacing: var(--display-tracking);
+  color: var(--heading);
+  line-height: 1.1;
   text-wrap: balance;
 }
 
@@ -123,14 +168,49 @@ p {
 :focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
+}
+
+/* Sections fade in once when scrolled into view (see <Reveal>) */
+/* Only hide when JavaScript runs (the theme script adds .js), so no-JS visitors and crawlers see everything */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.js [data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--sand) 0%, var(--surface) 50%, var(--sand) 100%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* Hide scrollbars on horizontal card rails while keeping them scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
   }
 }

@@ -1,59 +1,74 @@
-# Tourism Frontend
+# Africa Discover (tourism-frontend)
 
-Website for the Africa tourism platform (Cameroon first). Visitors pick a place, then see the hotels, restaurants and guides around it on a distance ruler, with tracked booking links.
+**Explore Africa. Experience the Extraordinary.**
 
-All data comes from the separate API: [tourism-backend](https://github.com/munjemunjegiovani-crypto/tourism-backend). Run the backend first.
-
-**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · English/French routes
-
-## Run it locally (Ubuntu)
-
-```bash
-# 1. Start the backend in another terminal (see its README): npm run dev → http://localhost:4000
-
-# 2. Frontend
-git clone https://github.com/munjemunjegiovani-crypto/tourism-frontend.git
-cd tourism-frontend
-npm install
-cp .env.example .env.local     # NEXT_PUBLIC_API_URL=http://localhost:4000
-npm run dev                    # http://localhost:3000
-```
-
-Opening <http://localhost:3000> sends you to `/en` or `/fr` depending on your browser language.
+The website for Africa Discover, a 2D tourism discovery platform for Cameroon and the rest of Africa. It's built with Next.js 16, React 19, TypeScript and Tailwind CSS v4, and it gets all its data from the separate [`tourism-backend`](../tourism-backend) API (Express + PostgreSQL).
 
 ## Pages
 
-| URL | Page |
+| Page | URL |
 | --- | --- |
-| `/en`, `/fr` | Home: search, and regions listed north to south |
-| `/en/attractions?q=&region=` | Search and filter places |
-| `/en/attractions/:slug?type=hotel&radius=10` | A place, with nearby businesses on a distance ruler |
-| `/en/businesses/:slug` | A business, with its booking link |
+| Home | `/` |
+| Explore (filters + categories) | `/explore` |
+| All destinations | `/destinations` |
+| Destination details | `/destinations/cameroon/mount-cameroon` |
+| Countries | `/countries` |
+| Country details | `/countries/cameroon` |
+| Experiences | `/experiences` |
+| Experience details | `/experiences/african-safari` |
+| Interactive map | `/map` |
+| Travel guide | `/guide` |
+| Article | `/guide/safety` |
+| Search results | `/search?q=waterfalls near Douala` |
+| Favorites | `/favorites` |
+| Trip planner | `/trip`, `/trip/:id` |
+| Profile | `/profile` |
+| Log in / Sign up | `/login`, `/signup` |
+| About, help, privacy, terms | `/about` |
+| 404 | any unknown URL |
 
-## Project structure
+## Highlights
+
+- **Search:** smart search with live suggestions ("Kenya" suggests Nairobi, Maasai Mara and more).
+- **Near me:** "Use my current location", or pick a city. If the browser refuses location, the site says so and carries on.
+- **Map:** no paid map API. Africa is drawn as SVG from Natural Earth data, with layers for destinations, hotels, restaurants, markets and transport.
+- **Favorites:** work without an account (saved in the browser) and move into your account when you sign up.
+- **Trip planner:** add, remove and reorder stops, set days and notes, and see the route, distance and estimated length. Starts from a "My Cameroon Adventure" example.
+- **Themes:** light theme in forest green, sand and gold, plus a classic dark theme.
+- **Built to standards:** responsive from 375 px to 1440 px; keyboard and screen-reader friendly; SEO metadata, sitemap and robots.
+
+## Run it locally
+
+Start the backend first (see its README), then:
+
+```bash
+cp .env.example .env.local
+npm install
+npm run dev        # http://localhost:3000
+```
+
+For a production build: `npm run build && npm start`. Keep the API running during the build, because some pages read from it.
+
+### Environment
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_API_URL` | Address of the tourism-backend API, e.g. `http://localhost:4000` |
+| `NEXT_PUBLIC_SITE_URL` | Public address of this site, used for canonical URLs, Open Graph and the sitemap |
+
+## How it fits together
+
+- Pages are React Server Components. They call the API through `src/lib/api.ts`, and public data is cached for 5 minutes.
+- Logging in sets an httpOnly cookie (`ad_session`) on this site. Server actions in `src/app/actions.ts` forward it to the API, so page scripts never see the token.
+- Photos come from Wikimedia Commons with credits. Places without a photo show a calm placeholder, never a fake picture.
 
 ```
 src/
-  proxy.ts                   redirects / to /en or /fr
-  app/[locale]/              all pages (layout, home, attractions, businesses)
-  components/                SearchForm, AttractionRow, NearbyRuler, LocaleSwitch…
-  lib/api.ts                 calls to the backend + response types
-  lib/i18n.ts                English and French text
-  app/globals.css            colours and fonts (Tailwind theme)
+  app/            Routes (one folder per page), server actions, sitemap, robots
+  components/     Navbar, Footer, cards, filters, map, gallery, forms…
+  lib/            API client, types, formatting, shared styles
 ```
 
-To add or change text, edit both the `en` and `fr` objects in `src/lib/i18n.ts`.
+## Note on the data
 
-## Deploy (Vercel)
-
-1. On [vercel.com](https://vercel.com): **Add New → Project** → import this repo.
-2. Add the environment variable `NEXT_PUBLIC_API_URL` = your deployed backend URL (for example `https://tourism-backend.onrender.com`).
-3. Deploy. Then add your Vercel URL to the backend's `CORS_ORIGIN`.
-
-## Notes
-
-- "Kamer Trails" is a working name; change it in `src/lib/i18n.ts` (`siteName`).
-- Fonts are self-hosted from npm, so builds don't depend on Google Fonts.
-- **Dark mode:** the moon/sun button in the header switches theme and remembers the choice; first visits follow the phone or computer setting. Dark mode uses ivory text, brass accents and Cormorant Garamond headlines. All colours live in `src/app/globals.css` under `:root` (light) and `[data-theme="dark"]`.
-- **Photos:** each place can have a cover photo (`coverImageUrl` from the API) with a credit line. Seed photos come from Wikimedia Commons; the credit links to the file page with the photographer and licence. Places without a photo show a placeholder.
-- Pages work without JavaScript (search and filters are plain links and forms), which helps on slow mobile networks.
+This is a prototype. Seeded reviews are labelled "Sample review", hotels and restaurants marked "Demo listing" are fictional, and real places (airports, markets) show no ratings yet.

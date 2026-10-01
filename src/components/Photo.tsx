@@ -1,86 +1,92 @@
 /* eslint-disable @next/next/no-img-element --
-   Photos come from Wikimedia Commons, which serves resized copies itself (Special:FilePath?width=),
-   so a plain <img> with srcset is enough and avoids proxying them through the Next.js image optimizer. */
+   Photos come from Wikimedia Commons, which resizes them itself (Special:FilePath?width=),
+   so a plain <img> with srcset + lazy loading gives responsive images without a proxy.
+   When photos move to a CMS or storage bucket, swap this component for next/image. */
+"use client";
 
-type PhotoProps = {
-  src: string | null;
-  alt: string;
-  credit?: string | null;
-  sourceUrl?: string | null;
-  creditLabel: string;
-  placeholderLabel: string;
-  /** Hint to the browser about how wide the image is drawn, e.g. "(min-width: 768px) 160px, 112px" */
-  sizes: string;
-  className?: string;
-  priority?: boolean;
-  showCredit?: boolean;
-};
+import { useEffect, useRef, useState } from "react";
+import type { Image } from "@/lib/types";
 
-const WIDTHS = [320, 640, 960, 1600];
+const WIDTHS = [400, 800, 1200, 1600];
 
-/** For Commons files, build a srcset so phones download small copies. */
-function srcSet(src: string) {
-  if (!src.includes("Special:FilePath")) return undefined;
-  return WIDTHS.map((w) => `${src.replace(/([?&])width=\d+/, `$1width=${w}`)} ${w}w`).join(", ");
+function srcSet(url: string) {
+  if (!url.includes("Special:FilePath")) return undefined;
+  return WIDTHS.map((w) => `${url.replace(/([?&])width=\d+/, `$1width=${w}`)} ${w}w`).join(", ");
 }
 
+/** Photo with credit, or a calm placeholder (never a fake picture of a real place). */
 export function Photo({
-  src,
+  image,
   alt,
-  credit,
-  sourceUrl,
-  creditLabel,
-  placeholderLabel,
   sizes,
   className = "",
+  imgClassName = "",
   priority = false,
-  showCredit = true,
-}: PhotoProps) {
-  // Callers may position the photo themselves (e.g. absolute behind a hero); otherwise it's relative
-  const position = /\b(absolute|fixed)\b/.test(className) ? "" : "relative";
+  credit = false,
+  placeholderEmoji,
+}: {
+  image: Image | null | undefined;
+  alt: string;
+  sizes: string;
+  className?: string;
+  imgClassName?: string;
+  priority?: boolean;
+  credit?: boolean;
+  placeholderEmoji?: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  const ref = useRef<HTMLImageElement>(null);
+  // An image can fail before React hydrates (onError would be missed), so check once on mount
+  useEffect(() => {
+    const img = ref.current;
+    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
+  }, []);
+  // "absolute" from the caller must not be overridden by our default "relative"
+  const pos = /(^|\s)(absolute|fixed)(\s|$)/.test(className) ? "" : "relative";
 
-  if (!src) {
+  if (!image || failed) {
     return (
-      <div
-        className={`${position} flex items-end overflow-hidden bg-brand-soft text-heading/70 ${className}`}
-        role="img"
-        aria-label={placeholderLabel}
-      >
-        {/* contour lines, a nod to a topographic map */}
-        <svg aria-hidden viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 size-full opacity-40">
-          {[20, 38, 56, 74, 92].map((r) => (
-            <ellipse key={r} cx="140" cy="40" rx={r * 1.4} ry={r} fill="none" stroke="currentColor" strokeWidth="1" />
+      <div className={`${pos} flex items-center justify-center overflow-hidden bg-sand ${className}`} role="img" aria-label={`${alt} (photo coming soon)`}>
+        <svg aria-hidden viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 size-full text-brown/25">
+          {[18, 34, 50, 66, 82].map((r) => (
+            <ellipse key={r} cx="150" cy="30" rx={r * 1.5} ry={r} fill="none" stroke="currentColor" strokeWidth="1" />
           ))}
         </svg>
-        <span className="relative p-3 text-xs">{placeholderLabel}</span>
+        {placeholderEmoji && <span className="relative text-4xl opacity-70">{placeholderEmoji}</span>}
       </div>
     );
   }
-
   return (
-    <figure className={`${position} overflow-hidden bg-brand-soft ${className}`}>
+    <div className={`${pos} overflow-hidden bg-sand ${className}`}>
       <img
-        src={src}
-        srcSet={srcSet(src)}
+        ref={ref}
+        onError={() => setFailed(true)}
+        src={image.url}
+        srcSet={srcSet(image.url)}
         sizes={sizes}
-        alt={alt}
+        alt={image.alt || alt}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}
         decoding="async"
-        className="size-full object-cover text-transparent"
+        className={`size-full object-cover text-transparent ${imgClassName}`}
       />
-      {showCredit && credit && (
-        <figcaption className="absolute right-0 bottom-0 rounded-tl bg-black/55 px-2 py-0.5 text-[11px] text-white/90">
-          {creditLabel}{" "}
-          {sourceUrl ? (
-            <a href={sourceUrl} target="_blank" rel="noopener" className="underline">
-              {credit}
-            </a>
-          ) : (
-            credit
-          )}
-        </figcaption>
+      {credit && image.credit && <PhotoCredit image={image} />}
+    </div>
+  );
+}
+
+export function PhotoCredit({ image, className = "absolute right-0 bottom-0" }: { image: Image; className?: string }) {
+  return (
+    <p className={`max-w-[80%] truncate rounded-tl-md bg-black/50 px-2 py-0.5 text-[11px] text-white/90 ${className}`}>
+      Photo:{" "}
+      {image.sourceUrl ? (
+        <a href={image.sourceUrl} target="_blank" rel="noopener" className="underline">
+          {image.credit}
+        </a>
+      ) : (
+        image.credit
       )}
-    </figure>
+      {image.license ? ` (${image.license})` : ""}
+    </p>
   );
 }
