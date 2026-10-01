@@ -43,12 +43,12 @@ export default async function AttractionsPage({ params, searchParams }: PageProp
   };
   const chip = (active: boolean) =>
     `rounded-full border px-3 py-1 text-sm ${
-      active ? "border-forest bg-forest text-mist" : "border-forest/25 text-forest hover:bg-leaf/50"
+      active ? "border-heading bg-heading text-page" : "border-line text-heading hover:bg-brand-soft"
     }`;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <h1 className="text-4xl font-bold text-forest sm:text-5xl">{q ? t.attractions.resultsFor(q) : t.attractions.title}</h1>
+      <h1 className="text-4xl text-heading sm:text-5xl">{q ? t.attractions.resultsFor(q) : t.attractions.title}</h1>
       <div className="mt-6">
         <SearchForm locale={locale} t={t} defaultValue={q} tone="light" />
       </div>
@@ -74,13 +74,13 @@ export default async function AttractionsPage({ params, searchParams }: PageProp
           </nav>
 
           {attractions.length ? (
-            <ul className="mt-8 grid gap-x-12 md:grid-cols-2 [&>li]:border-t [&>li]:border-forest/15">
+            <ul className="mt-8 grid gap-x-12 md:grid-cols-2 [&>li]:border-t [&>li]:border-line">
               {attractions.map((a) => (
                 <AttractionRow key={a.slug} a={a} locale={locale} />
               ))}
             </ul>
           ) : (
-            <p className="mt-10 max-w-prose text-lg text-stone">{t.attractions.empty}</p>
+            <p className="mt-10 max-w-prose text-lg text-muted">{t.attractions.empty}</p>
           )}
         </>
       )}

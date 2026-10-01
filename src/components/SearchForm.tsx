@@ -26,13 +26,13 @@ export function SearchForm({
         placeholder={t.home.searchPlaceholder}
         className={`min-w-0 flex-1 rounded-lg border px-4 py-3 text-base ${
           dark
-            ? "border-leaf/30 bg-forest/40 text-mist placeholder:text-mist/60"
-            : "border-forest/20 bg-white text-basalt placeholder:text-stone"
+            ? "border-band-ink/30 bg-black/20 text-band-ink placeholder:text-band-ink/60"
+            : "border-line bg-surface text-ink placeholder:text-muted"
         }`}
       />
       <button
         type="submit"
-        className="rounded-lg bg-savanna px-5 py-3 font-bold text-basalt hover:bg-savanna/90"
+        className="rounded-lg bg-accent px-5 py-3 font-bold text-accent-ink hover:bg-accent/90"
       >
         {t.home.searchButton}
       </button>

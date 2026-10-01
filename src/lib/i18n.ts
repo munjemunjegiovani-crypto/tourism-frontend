@@ -6,7 +6,9 @@ export const hasLocale = (value: string): value is Locale => (locales as readonl
 
 const en = {
   siteName: "Kamer Trails",
-  nav: { explore: "Explore", switchTo: "Français" },
+  nav: { explore: "Explore", switchTo: "Français", darkMode: "Switch to dark mode", lightMode: "Switch to light mode" },
+  photoBy: "Photo:",
+  noPhoto: "Photo coming soon",
   home: {
     title: "Pick a place in Cameroon. See everything near it.",
     intro:
@@ -64,7 +66,9 @@ export type Dictionary = typeof en;
 
 const fr: Dictionary = {
   siteName: "Kamer Trails",
-  nav: { explore: "Explorer", switchTo: "English" },
+  nav: { explore: "Explorer", switchTo: "English", darkMode: "Passer en mode sombre", lightMode: "Passer en mode clair" },
+  photoBy: "Photo :",
+  noPhoto: "Photo bientôt disponible",
   home: {
     title: "Choisissez un lieu au Cameroun. Voyez tout ce qui l'entoure.",
     intro:

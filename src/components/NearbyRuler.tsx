@@ -52,8 +52,8 @@ export function NearbyRuler({
         {placed.map(({ item, pct, lane }) => (
           <span
             key={item.slug}
-            className={`absolute flex size-8 -translate-x-1/2 items-center justify-center rounded-full text-sm font-bold ring-2 ring-mist ${
-              item.sponsored ? "bg-savanna text-basalt" : "bg-canopy text-mist"
+            className={`absolute flex size-8 -translate-x-1/2 items-center justify-center rounded-full text-sm font-bold ring-2 ring-page ${
+              item.sponsored ? "bg-accent text-accent-ink" : "bg-brand text-page"
             }`}
             style={{ left: `${pct}%`, bottom: `${3.25 + lane * 2.25}rem` }}
           >
@@ -62,15 +62,15 @@ export function NearbyRuler({
         ))}
 
         {/* the ruler */}
-        <div className="absolute inset-x-0 bottom-[2.25rem] h-1 rounded-full bg-forest/80" />
+        <div className="absolute inset-x-0 bottom-[2.25rem] h-1 rounded-full bg-heading/80" />
         <span
-          className="absolute bottom-[1.75rem] left-0 size-5 -translate-x-1/2 rounded-full border-4 border-forest bg-mist"
+          className="absolute bottom-[1.75rem] left-0 size-5 -translate-x-1/2 rounded-full border-4 border-heading bg-page"
           aria-hidden
         />
         {ticks.map((tk, i) => (
           <span
             key={tk}
-            className={`absolute bottom-0 whitespace-nowrap text-xs text-stone tabular-nums ${
+            className={`absolute bottom-0 whitespace-nowrap text-xs text-muted tabular-nums ${
               i === 0 ? "-translate-x-3" : i === ticks.length - 1 ? "-translate-x-full" : "-translate-x-1/2"
             }`}
             style={{ left: `${(tk / km) * 100}%` }}

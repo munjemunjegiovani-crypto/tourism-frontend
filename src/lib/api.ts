@@ -17,6 +17,8 @@ export type AttractionSummary = {
   summaryFr: string | null;
   entryFee: string | null;
   coverImageUrl: string | null;
+  coverImageCredit: string | null;
+  coverImageSourceUrl: string | null;
   location: LatLng;
   city: { slug: string; name: string };
   region: Named;

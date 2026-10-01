@@ -8,13 +8,13 @@ export default function NotFound() {
   const fr = getDictionary("fr");
   return (
     <div className="mx-auto max-w-2xl px-4 py-24 sm:px-6">
-      <h1 className="text-4xl font-bold text-forest">{t.errors.notFoundTitle}</h1>
+      <h1 className="text-4xl text-heading">{t.errors.notFoundTitle}</h1>
       <p className="mt-3 text-lg">{t.errors.notFoundBody}</p>
       <p className="mt-6 flex gap-4">
-        <Link href="/en" className="text-canopy underline">
+        <Link href="/en" className="text-brand underline">
           {t.errors.backHome}
         </Link>
-        <Link href="/fr" lang="fr" className="text-canopy underline">
+        <Link href="/fr" lang="fr" className="text-brand underline">
           {fr.errors.backHome}
         </Link>
       </p>

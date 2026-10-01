@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { api, bookingHref, mapHref, type Attraction, type Category, type NearbyBusiness } from "@/lib/api";
 import { formatDistance, getDictionary, hasLocale, pick } from "@/lib/i18n";
 import { NearbyRuler } from "@/components/NearbyRuler";
+import { Photo } from "@/components/Photo";
 import { ApiDown } from "@/components/ApiDown";
 
 const RADII_KM = [2, 5, 10, 25];
@@ -57,14 +58,34 @@ export default async function AttractionPage({ params, searchParams }: PageProps
   };
   const chip = (active: boolean) =>
     `rounded-full border px-3 py-1 text-sm ${
-      active ? "border-forest bg-forest text-mist" : "border-forest/25 text-forest hover:bg-leaf/50"
+      active ? "border-heading bg-heading text-page" : "border-line text-heading hover:bg-brand-soft"
     }`;
 
   return (
     <article>
-      <header className="bg-forest text-mist">
-        <div className="mx-auto max-w-6xl px-4 pt-10 pb-12 sm:px-6 sm:pt-14">
-          <p className="text-mist/80">
+      <header className="relative isolate overflow-hidden bg-band text-band-ink">
+        {a.coverImageUrl && (
+          <>
+            <Photo
+              src={a.coverImageUrl}
+              alt={a.name}
+              creditLabel={t.photoBy}
+              placeholderLabel={t.noPhoto}
+              sizes="100vw"
+              className="absolute inset-0 -z-10"
+              priority
+              showCredit={false}
+            />
+            {/* darkens the bottom of the photo so the white text stays readable */}
+            <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-black/85 via-black/45 to-black/10" />
+          </>
+        )}
+        <div
+          className={`mx-auto max-w-6xl px-4 pb-12 sm:px-6 ${
+            a.coverImageUrl ? "flex min-h-[26rem] flex-col justify-end pt-24 sm:min-h-[34rem]" : "pt-10 sm:pt-14"
+          }`}
+        >
+          <p className="text-band-ink/80">
             <Link href={`/${locale}/attractions?region=${a.region.slug}`} className="hover:underline">
               {pick(locale, a.region.nameEn, a.region.nameFr)}
             </Link>
@@ -73,27 +94,39 @@ export default async function AttractionPage({ params, searchParams }: PageProps
             {", "}
             {pick(locale, a.category.nameEn, a.category.nameFr).toLowerCase()}
           </p>
-          <h1 className="mt-2 text-5xl font-bold sm:text-7xl">{a.name}</h1>
-          <p className="mt-5 max-w-2xl text-lg text-mist/90">{pick(locale, a.summaryEn, a.summaryFr)}</p>
+          <h1 className="mt-2 text-5xl sm:text-7xl">{a.name}</h1>
+          <p className="mt-5 max-w-2xl text-lg text-band-ink/90">{pick(locale, a.summaryEn, a.summaryFr)}</p>
         </div>
+        {a.coverImageUrl && a.coverImageCredit && (
+          <p className="absolute right-2 bottom-2 text-[11px] text-white/80">
+            {t.photoBy}{" "}
+            {a.coverImageSourceUrl ? (
+              <a href={a.coverImageSourceUrl} target="_blank" rel="noopener" className="underline">
+                {a.coverImageCredit}
+              </a>
+            ) : (
+              a.coverImageCredit
+            )}
+          </p>
+        )}
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <dl className="flex flex-wrap gap-x-10 gap-y-4">
           {a.bestSeason && (
             <div>
-              <dt className="text-sm text-stone">{t.attraction.bestSeason}</dt>
+              <dt className="text-sm text-muted">{t.attraction.bestSeason}</dt>
               <dd className="font-bold">{a.bestSeason}</dd>
             </div>
           )}
           {a.entryFee && (
             <div>
-              <dt className="text-sm text-stone">{t.attraction.entryFee}</dt>
+              <dt className="text-sm text-muted">{t.attraction.entryFee}</dt>
               <dd className="font-bold">{a.entryFee}</dd>
             </div>
           )}
           <div className="self-end">
-            <a href={mapHref(a.location)} target="_blank" rel="noopener" className="text-canopy underline">
+            <a href={mapHref(a.location)} target="_blank" rel="noopener" className="text-brand underline">
               {t.attraction.openMap}
             </a>
           </div>
@@ -103,9 +136,9 @@ export default async function AttractionPage({ params, searchParams }: PageProps
         )}
       </div>
 
-      <section id="nearby" className="border-t border-forest/10 bg-white/60">
+      <section id="nearby" className="border-t border-line bg-surface">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-          <h2 className="text-3xl font-bold text-forest sm:text-4xl">{t.attraction.nearbyTitle}</h2>
+          <h2 className="text-3xl text-heading sm:text-4xl">{t.attraction.nearbyTitle}</h2>
 
           <div className="mt-6 flex flex-wrap items-center gap-2">
             <Link href={href({ type: undefined })} className={chip(!type)} aria-current={!type ? "page" : undefined}>
@@ -121,7 +154,7 @@ export default async function AttractionPage({ params, searchParams }: PageProps
                 {pick(locale, c.nameEn, c.nameFr)}
               </Link>
             ))}
-            <span className="ml-2 text-sm text-stone">{t.attraction.within}</span>
+            <span className="ml-2 text-sm text-muted">{t.attraction.within}</span>
             {RADII_KM.map((km) => (
               <Link
                 key={km}
@@ -137,7 +170,7 @@ export default async function AttractionPage({ params, searchParams }: PageProps
           {marked.length ? (
             <>
               <NearbyRuler items={marked} radiusMeters={radiusKm * 1000} locale={locale} originLabel={t.attraction.you} />
-              <ul className="mt-8 divide-y divide-forest/10">
+              <ul className="mt-8 divide-y divide-line">
                 {marked.map((b) => {
                   const book = bookingHref(b.bookUrl);
                   return (
@@ -145,20 +178,20 @@ export default async function AttractionPage({ params, searchParams }: PageProps
                       <span
                         aria-hidden
                         className={`flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
-                          b.sponsored ? "bg-savanna text-basalt" : "bg-canopy text-mist"
+                          b.sponsored ? "bg-accent text-accent-ink" : "bg-brand text-page"
                         }`}
                       >
                         {b.mark}
                       </span>
                       <div className="min-w-0 flex-1">
-                        <Link href={`/${locale}/businesses/${b.slug}`} className="text-lg font-bold text-forest hover:underline">
+                        <Link href={`/${locale}/businesses/${b.slug}`} className="text-lg font-bold text-heading hover:underline">
                           {b.name}
                         </Link>
-                        <p className="text-sm text-stone">
+                        <p className="text-sm text-muted">
                           {pick(locale, b.category.nameEn, b.category.nameFr)}
                           {b.priceRange ? `, ${b.priceRange}` : ""} — {t.attraction.away(formatDistance(b.distanceMeters, locale))}
                           {b.sponsored && (
-                            <span className="ml-2 rounded bg-savanna/25 px-1.5 py-0.5 text-xs text-savanna-deep">
+                            <span className="ml-2 rounded bg-accent/25 px-1.5 py-0.5 text-xs text-accent-deep">
                               {t.business.sponsored}
                             </span>
                           )}
@@ -169,7 +202,7 @@ export default async function AttractionPage({ params, searchParams }: PageProps
                           href={book}
                           target="_blank"
                           rel="sponsored noopener"
-                          className="ml-12 basis-full rounded-lg bg-savanna px-4 py-2 text-center text-sm font-bold text-basalt hover:bg-savanna/90 sm:ml-0 sm:basis-auto"
+                          className="ml-12 basis-full rounded-lg bg-accent px-4 py-2 text-center text-sm font-bold text-accent-ink hover:bg-accent/90 sm:ml-0 sm:basis-auto"
                         >
                           {t.business.book}
                         </a>
@@ -180,7 +213,7 @@ export default async function AttractionPage({ params, searchParams }: PageProps
               </ul>
             </>
           ) : (
-            <p className="mt-8 text-lg text-stone">{t.attraction.nearbyEmpty(radiusKm)}</p>
+            <p className="mt-8 text-lg text-muted">{t.attraction.nearbyEmpty(radiusKm)}</p>
           )}
         </div>
       </section>

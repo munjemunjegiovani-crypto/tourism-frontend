@@ -28,19 +28,19 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/busi
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-      <p className="text-stone">
+      <p className="text-muted">
         <Link href={`/${locale}/attractions?region=${b.region.slug}`} className="hover:underline">
           {pick(locale, b.region.nameEn, b.region.nameFr)}
         </Link>
         {", "}
         {b.city.name}, {pick(locale, b.category.nameEn, b.category.nameFr).toLowerCase()}
       </p>
-      <h1 className="mt-2 text-4xl font-bold text-forest sm:text-6xl">{b.name}</h1>
+      <h1 className="mt-2 text-4xl text-heading sm:text-6xl">{b.name}</h1>
       <p className="mt-3 flex flex-wrap gap-2 text-sm">
         {b.sponsored && (
-          <span className="rounded bg-savanna/25 px-2 py-0.5 text-savanna-deep">{t.business.sponsored}</span>
+          <span className="rounded bg-accent/25 px-2 py-0.5 text-accent-deep">{t.business.sponsored}</span>
         )}
-        {b.verified && <span className="rounded bg-leaf px-2 py-0.5 text-forest">{t.business.verified}</span>}
+        {b.verified && <span className="rounded bg-brand-soft px-2 py-0.5 text-heading">{t.business.verified}</span>}
       </p>
 
       <div className="mt-8 grid gap-10 md:grid-cols-[1fr_18rem]">
@@ -49,7 +49,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/busi
           {b.amenities?.length ? (
             <ul className="flex flex-wrap gap-2">
               {b.amenities.map((x) => (
-                <li key={x} className="rounded-full border border-forest/20 px-3 py-1 text-sm">
+                <li key={x} className="rounded-full border border-line px-3 py-1 text-sm">
                   {x}
                 </li>
               ))}
@@ -60,27 +60,27 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/busi
               href={book}
               target="_blank"
               rel="sponsored noopener"
-              className="inline-block rounded-lg bg-savanna px-6 py-3 font-bold text-basalt hover:bg-savanna/90"
+              className="inline-block rounded-lg bg-accent px-6 py-3 font-bold text-accent-ink hover:bg-accent/90"
             >
               {t.business.book}
             </a>
           ) : (
-            <p className="text-stone">{t.business.noBooking}</p>
+            <p className="text-muted">{t.business.noBooking}</p>
           )}
         </div>
 
-        <dl className="space-y-4 md:border-l md:border-forest/15 md:pl-6">
+        <dl className="space-y-4 md:border-l md:border-line md:pl-6">
           {b.priceRange && (
             <div>
-              <dt className="text-sm text-stone">{t.business.price}</dt>
+              <dt className="text-sm text-muted">{t.business.price}</dt>
               <dd className="font-bold">{b.priceRange}</dd>
             </div>
           )}
           {b.phone && (
             <div>
-              <dt className="text-sm text-stone">{t.business.phone}</dt>
+              <dt className="text-sm text-muted">{t.business.phone}</dt>
               <dd>
-                <a href={`tel:${b.phone}`} className="font-bold text-canopy underline">
+                <a href={`tel:${b.phone}`} className="font-bold text-brand underline">
                   {b.phone}
                 </a>
               </dd>
@@ -88,9 +88,9 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/busi
           )}
           {b.email && (
             <div>
-              <dt className="text-sm text-stone">{t.business.email}</dt>
+              <dt className="text-sm text-muted">{t.business.email}</dt>
               <dd>
-                <a href={`mailto:${b.email}`} className="font-bold text-canopy underline">
+                <a href={`mailto:${b.email}`} className="font-bold text-brand underline">
                   {b.email}
                 </a>
               </dd>
@@ -98,12 +98,12 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/busi
           )}
           {b.address && (
             <div>
-              <dt className="text-sm text-stone">{t.business.address}</dt>
+              <dt className="text-sm text-muted">{t.business.address}</dt>
               <dd>{b.address}</dd>
             </div>
           )}
           <div>
-            <a href={mapHref(b.location)} target="_blank" rel="noopener" className="text-canopy underline">
+            <a href={mapHref(b.location)} target="_blank" rel="noopener" className="text-brand underline">
               {t.business.openMap}
             </a>
           </div>

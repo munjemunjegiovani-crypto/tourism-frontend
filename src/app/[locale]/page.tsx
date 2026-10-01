@@ -30,10 +30,10 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
-      <section className="bg-forest text-mist">
+      <section className="bg-band text-band-ink">
         <div className="mx-auto max-w-6xl px-4 pt-14 pb-16 sm:px-6 sm:pt-20 sm:pb-24">
-          <h1 className="max-w-4xl text-5xl font-bold sm:text-7xl">{t.home.title}</h1>
-          <p className="mt-6 max-w-2xl text-lg text-mist/85">{t.home.intro}</p>
+          <h1 className="max-w-4xl text-5xl sm:text-7xl">{t.home.title}</h1>
+          <p className="mt-6 max-w-2xl text-lg text-band-ink/85">{t.home.intro}</p>
           <div className="mt-10">
             <SearchForm locale={locale} t={t} />
           </div>
@@ -44,30 +44,30 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         <ApiDown message={t.errors.apiDown} />
       ) : (
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-3xl font-bold text-forest sm:text-4xl">{t.home.regionsTitle}</h2>
-          <p className="mt-2 text-stone">{t.home.regionsIntro}</p>
+          <h2 className="text-3xl text-heading sm:text-4xl">{t.home.regionsTitle}</h2>
+          <p className="mt-2 text-muted">{t.home.regionsIntro}</p>
 
-          <ol className="mt-10 border-l-2 border-canopy/40">
+          <ol className="mt-10 border-l-2 border-brand/40">
             {transect.map(({ region, places, lat }) => (
               <li key={region.slug} className="relative pb-12 pl-6 last:pb-0 sm:pl-10">
-                <span aria-hidden className="absolute top-2 -left-[7px] size-3 rounded-full bg-canopy" />
+                <span aria-hidden className="absolute top-2 -left-[7px] size-3 rounded-full bg-brand" />
                 <div className="grid gap-4 md:grid-cols-[14rem_1fr] md:gap-10">
                   <div>
-                    <h3 className="text-2xl font-bold text-forest">{pick(locale, region.nameEn, region.nameFr)}</h3>
+                    <h3 className="text-2xl text-heading">{pick(locale, region.nameEn, region.nameFr)}</h3>
                     {lat !== null && (
-                      <p className="font-display text-4xl font-light text-canopy/80 tabular-nums">
+                      <p className="font-display text-4xl font-light text-brand/80 tabular-nums">
                         {lat.toFixed(1)}°N
                       </p>
                     )}
                   </div>
                   {places.length ? (
-                    <ul className="divide-y divide-forest/15">
+                    <ul className="divide-y divide-line">
                       {places.map((a) => (
                         <AttractionRow key={a.slug} a={a} locale={locale} />
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-stone">{t.home.noAttractions}</p>
+                    <p className="text-muted">{t.home.noAttractions}</p>
                   )}
                 </div>
               </li>

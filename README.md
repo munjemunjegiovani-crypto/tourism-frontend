@@ -54,4 +54,6 @@ To add or change text, edit both the `en` and `fr` objects in `src/lib/i18n.ts`.
 
 - "Kamer Trails" is a working name; change it in `src/lib/i18n.ts` (`siteName`).
 - Fonts are self-hosted from npm, so builds don't depend on Google Fonts.
+- **Dark mode:** the moon/sun button in the header switches theme and remembers the choice; first visits follow the phone or computer setting. Dark mode uses ivory text, brass accents and Cormorant Garamond headlines. All colours live in `src/app/globals.css` under `:root` (light) and `[data-theme="dark"]`.
+- **Photos:** each place can have a cover photo (`coverImageUrl` from the API) with a credit line. Seed photos come from Wikimedia Commons; the credit links to the file page with the photographer and licence. Places without a photo show a placeholder.
 - Pages work without JavaScript (search and filters are plain links and forms), which helps on slow mobile networks.
