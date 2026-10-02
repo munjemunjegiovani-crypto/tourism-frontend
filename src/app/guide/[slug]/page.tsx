@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { api } from "@/lib/api";
-import { formatDate } from "@/lib/format";
+import { formatDate, photoUrl } from "@/lib/format";
 import { container } from "@/lib/ui";
 import type { ArticleBlock, ArticleDetail } from "@/lib/types";
 import { Photo } from "@/components/Photo";
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: a.title,
     description: a.summary,
     alternates: { canonical: `/guide/${a.slug}` },
-    openGraph: { type: "article", publishedTime: a.publishedAt, images: a.image ? [{ url: a.image.url, alt: a.image.alt }] : undefined },
+    openGraph: { type: "article", publishedTime: a.publishedAt, images: a.image ? [{ url: photoUrl(a.image.url, 1280), alt: a.image.alt }] : undefined },
   };
 }
 

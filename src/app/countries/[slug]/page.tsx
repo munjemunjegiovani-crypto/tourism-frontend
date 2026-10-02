@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { api } from "@/lib/api";
-import { destinationHref, isoNumeric, placeLine } from "@/lib/format";
+import { destinationHref, isoNumeric, placeLine, photoUrl } from "@/lib/format";
 import { btn, container } from "@/lib/ui";
 import { AfricaMap } from "@/components/AfricaMap";
 import { Photo } from "@/components/Photo";
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `Travel guide to ${c.name}`,
     description: `${c.tagline} Top destinations, culture, food, the best time to visit and budgets for ${c.name}.`,
     alternates: { canonical: `/countries/${c.slug}` },
-    openGraph: { images: c.image ? [{ url: c.image.url, alt: c.image.alt }] : undefined },
+    openGraph: { images: c.image ? [{ url: photoUrl(c.image.url, 1280), alt: c.image.alt }] : undefined },
   };
 }
 

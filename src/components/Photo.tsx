@@ -5,13 +5,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { PHOTO_WIDTHS, photoUrl } from "@/lib/format";
 import type { Image } from "@/lib/types";
-
-const WIDTHS = [400, 800, 1200, 1600];
 
 function srcSet(url: string) {
   if (!url.includes("Special:FilePath")) return undefined;
-  return WIDTHS.map((w) => `${url.replace(/([?&])width=\d+/, `$1width=${w}`)} ${w}w`).join(", ");
+  return PHOTO_WIDTHS.map((w) => `${photoUrl(url, w)} ${w}w`).join(", ");
 }
 
 /** Photo with credit, or a calm placeholder (never a fake picture of a real place). */
@@ -61,7 +60,7 @@ export function Photo({
       <img
         ref={ref}
         onError={() => setFailed(true)}
-        src={image.url}
+        src={photoUrl(image.url, 960)}
         srcSet={srcSet(image.url)}
         sizes={sizes}
         alt={image.alt || alt}

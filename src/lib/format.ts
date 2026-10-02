@@ -46,3 +46,15 @@ export const isoNumeric: Record<string, string> = {
   UG: "800", ET: "231", CI: "384", BW: "72", ZM: "894", ZW: "716", MU: "480", SC: "690", TN: "788", DZ: "12", MG: "450",
   MZ: "508", MW: "454", CD: "180", CG: "178",
 };
+
+/**
+ * Wikimedia only serves thumbnails in these widths; any other width is refused (HTTP 429).
+ * https://www.mediawiki.org/wiki/Common_thumbnail_sizes
+ */
+export const PHOTO_WIDTHS = [330, 500, 960, 1280, 1920] as const;
+
+/** A Commons photo URL at one of the allowed widths. Other URLs are returned unchanged. */
+export function photoUrl(url: string, width: (typeof PHOTO_WIDTHS)[number] = 960) {
+  if (!url.includes("Special:FilePath")) return url;
+  return /[?&]width=\d+/.test(url) ? url.replace(/([?&])width=\d+/, `$1width=${width}`) : `${url}${url.includes("?") ? "&" : "?"}width=${width}`;
+}

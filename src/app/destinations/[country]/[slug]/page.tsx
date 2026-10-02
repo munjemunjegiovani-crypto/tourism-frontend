@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { api } from "@/lib/api";
-import { MONTHS, difficultyLabel, destinationHref, formatDate, initials, placeLine } from "@/lib/format";
+import { MONTHS, difficultyLabel, destinationHref, formatDate, initials, placeLine, photoUrl } from "@/lib/format";
 import { btn, container } from "@/lib/ui";
 import type { DestinationDetail, Place } from "@/lib/types";
 import { AfricaMap } from "@/components/AfricaMap";
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${d.name}, ${d.country.name}`,
     description: d.summary,
     alternates: { canonical: destinationHref(d) },
-    openGraph: { title: `${d.name} · Africa Discover`, description: d.summary, images: d.image ? [{ url: d.image.url, alt: d.image.alt }] : undefined },
+    openGraph: { title: `${d.name} · Africa Discover`, description: d.summary, images: d.image ? [{ url: photoUrl(d.image.url, 1280), alt: d.image.alt }] : undefined },
   };
 }
 

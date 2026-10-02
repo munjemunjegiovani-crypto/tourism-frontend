@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { photoUrl } from "@/lib/format";
 import type { Image } from "@/lib/types";
 import { Photo, PhotoCredit } from "./Photo";
 import { ChevronLeft, ChevronRight, CloseIcon, ImagesIcon } from "./icons";
@@ -69,7 +70,7 @@ export function Gallery({ images, name, emoji }: { images: Image[]; name: string
           </div>
           <div className="relative flex flex-1 items-center justify-center px-4 pb-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={images[open].url} alt={images[open].alt || name} className="max-h-[78vh] max-w-full rounded-lg object-contain" />
+            <img src={photoUrl(images[open].url, 1280)} alt={images[open].alt || name} className="max-h-[78vh] max-w-full rounded-lg object-contain" />
             {images.length > 1 && (
               <>
                 <button type="button" onClick={() => setOpen((open - 1 + images.length) % images.length)} className="absolute left-3 rounded-full bg-white/10 p-3 hover:bg-white/20" aria-label="Previous photo">
